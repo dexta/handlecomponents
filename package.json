@@ -1,0 +1,32 @@
+{
+  "name": "handlecomponents",
+  "version": "0.0.2",
+  "description": "Handlebars Components base setup - vanilla Javascript",
+  "main": "app.js",
+  "scripts": {
+    "test": "node willcomesome.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dexta/handlecomponents.git"
+  },
+  "keywords": [
+    "handlebars",
+    "html",
+    "components",
+    "javascript",
+    "html5"
+  ],
+  "author": "dexta.de",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/dexta/handlecomponents/issues"
+  },
+  "homepage": "https://github.com/dexta/handlecomponents#readme",
+  "dependencies": {
+    "bootstrap": "^5.1.2",
+    "express": "^4.17.1",
+    "handlebars": "^4.7.7",
+    "superagent": "^6.1.0"
+  }
+}

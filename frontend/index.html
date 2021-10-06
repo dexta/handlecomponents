@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Handlebars Components</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<script src="js/libs/handlebars.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/libs/superagent.min.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body onload="initAll()">
+<div class="container">
+	<div class="row">
+		<div class="col-6">
+			<h2>Some Blog Posts</h2>
+		</div>
+	</div>
+
+	<div class="row" id="targetContainer"></div>
+</div>
+<script>
+	Handlebars.registerHelper('formateTime', (timestamp) => {
+		if(timestamp||false) {
+			return new Date(timestamp).toUTCString();;
+		}
+		return "";
+	});
+</script>
+
+<script>
+	let state = {};
+	let posts = {};
+	let templateCache = {};
+	const initAll = () => {
+		loadState();
+		loadDataToTemplate('/json/someData.json', 'listPosts', 'targetContainer');
+
+	};
+
+	const loadDataToTemplate = (path, tempId, target) => {
+		superagent
+	   .get(path)
+	   .then(res => {
+	      // res.body, res.headers, res.status
+	      console.dir(res.body);
+	      posts = res.body;
+	      renderTemplate(tempId, res.body, target);
+	   })
+	   .catch(err => {
+	      // err.message, err.response
+	      console.log(err.message);
+	      console.dir(err.response);
+	   });
+	}
+
+	const loadTemplate = (tempId, callback) => {
+		superagent
+		 .get('/tpl/'+tempId+'.handlebars')
+		 .then(res => {
+		 		console.log(res.body);
+		 		templateCache[tempId] = res.text;
+		 		callback(res.text);
+		 })
+		 .catch(err => {
+		 		cacheErrCount++
+		 		if(cacheErrCount <= 10) {
+			 		console.log(err.message);
+		      console.dir(err.response);
+		    }
+		 });
+	};
+
+	const renderTemplate = (tempId, dataSet, target) => {
+		if(templateCache[tempId]||false) {
+			const template = templateCache[tempId];
+			const comTempl = Handlebars.compile(template);
+
+			const html = comTempl(dataSet);
+			document.getElementById(target).innerHTML = html;
+		} else {
+			loadTemplate(tempId, () => { renderTemplate(tempId, dataSet, target); });
+		}
+	};
+
+	const saveState = () => {
+		let strState = JSON.stringify(state);
+		localStorage.setItem('userState', strState);
+	};
+
+	const loadState = () => {
+		let loState = localStorage.getItem('userState');
+		if(loState||false) {
+			let tmpState = Object.assign(state, JSON.parse(loState));
+			state = tmpState;
+		} else {
+			console.log('error while loading the state from');
+			saveState();
+		}
+	};
+</script>
+</body>
+</html>

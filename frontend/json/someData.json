@@ -1,0 +1,27 @@
+{"posts":
+	[
+   {
+      "title":"Hello new User",
+      "content":"This is just the first post, staytuned for more"
+   },
+   {
+      "title":"Welcome back 2nd time",
+      "content":"should we add some more keys to the post obj"
+   },
+   {
+      "title":"No order here yet",
+      "content":"to order the post an id and or date will be nice"
+   },
+   {
+      "title":"Start the id at 1",
+      "content":"end of test for now, id added",
+      "id":1
+   },
+   {
+   		"title":"We need a timestamp",
+   		"content":"You cant order without a good value to do so. Lets do simple start with one timestamp to order the Posts by date",
+   		"id":2,
+   		"timestamp":1633516916153
+   }
+	]
+}
